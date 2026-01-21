@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.4338480">
+  <PropertyGroup>
+    <!-- https://learn.microsoft.com/en-us/visualstudio/javascript/javascript-project-system-msbuild-reference?view=vs-2022#shouldrunnpminstall -->
+    <ShouldRunNpmInstall>false</ShouldRunNpmInstall>
+    <!-- https://learn.microsoft.com/en-us/visualstudio/javascript/javascript-project-system-msbuild-reference?view=vs-2022#buildcommand -->
+    <BuildCommand>pnpm run build</BuildCommand>
+    <!-- https://learn.microsoft.com/en-us/visualstudio/javascript/javascript-project-system-msbuild-reference?view=vs-2022#startupcommand -->
+    <StartupCommand>pnpm run serve</StartupCommand>
+    <!-- https://learn.microsoft.com/en-us/visualstudio/javascript/javascript-project-system-msbuild-reference?view=vs-2022#testcommand  -->
+    <TestCommand>ng test</TestCommand>
+    <!-- https://learn.microsoft.com/en-us/visualstudio/javascript/javascript-project-system-msbuild-reference?view=vs-2022#cleancommand -->
+    <CleanCommand>pnpm run clean</CleanCommand>
+    <!-- https://learn.microsoft.com/en-us/visualstudio/javascript/javascript-project-system-msbuild-reference?view=vs-2022#publishcommand -->
+    <PublishCommand>pnpm run publish</PublishCommand>
+    <JavaScriptTestRoot>src\</JavaScriptTestRoot>
+    <JavaScriptTestFramework>Jasmine</JavaScriptTestFramework>
+  </PropertyGroup>
+
+  <Target Name="RunPnpmInstall" BeforeTargets="BeforeRestore">
+    <Exec Command="pnpm install" />
+  </Target>
+</Project>
