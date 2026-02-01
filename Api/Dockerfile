@@ -10,10 +10,23 @@ EXPOSE 8081
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN apt-get update \
+    && apt-get --assume-yes --no-install-recommends install curl \
+    && curl -fsSL https://deb.nodesource.com/setup_25.x | bash - \
+    && apt-get --assume-yes --no-install-recommends install \
+        nodejs \
+    && rm -rf /var/lib/apt/lists/* \
+    && npm install -g corepack
 ARG BUILD_CONFIGURATION=Release
+WORKDIR "/src/Api"
+COPY ["Api/Api.csproj", "./"]
+RUN dotnet restore "./Api.csproj"
+WORKDIR "/src/UI"
+COPY ["UI/UI.esproj", "UI/package.json", "UI/pnpm-lock.yaml", "./"]
+RUN corepack install && corepack enable pnpm && dotnet restore "./UI.esproj"
 WORKDIR /src
-COPY ["Api/Api.csproj", "Api/"]
-RUN dotnet restore "./Api/Api.csproj"
 COPY . .
 WORKDIR "/src/Api"
 RUN dotnet build "./Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
