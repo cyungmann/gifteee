@@ -9,19 +9,14 @@
     <!-- https://learn.microsoft.com/en-us/visualstudio/javascript/javascript-project-system-msbuild-reference?view=vs-2022#testcommand  -->
     <TestCommand>pnpm run ng test</TestCommand>
     <!-- https://learn.microsoft.com/en-us/visualstudio/javascript/javascript-project-system-msbuild-reference?view=vs-2022#cleancommand -->
-    <CleanCommand>pnpm run clean</CleanCommand>
+    <CleanCommand></CleanCommand>
     <!-- https://learn.microsoft.com/en-us/visualstudio/javascript/javascript-project-system-msbuild-reference?view=vs-2022#publishcommand -->
     <PublishCommand>pnpm run publish</PublishCommand>
     <JavaScriptTestRoot>src\</JavaScriptTestRoot>
     <JavaScriptTestFramework>Jasmine</JavaScriptTestFramework>
   </PropertyGroup>
 
-  <!--
-  TODO: this should just specify BeforeTarget of BeforeRestore, but that does not seem
-  to work as we get back "Determining projects to restore..." and "All projects are up-to-date for restore."
-  and then this command never actually runs.
-  -->
-  <Target Name="RunPnpmInstall" BeforeTargets="Restore;CollectPackageReferences">
+  <Target Name="RunPnpmInstall" BeforeTargets="CollectPackageReferences">
     <Exec Command="pnpm install" />
   </Target>
 </Project>
