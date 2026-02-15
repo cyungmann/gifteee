@@ -7,7 +7,9 @@
       "appBuildCommand": "pnpm run build",
       "run": "pnpm start",
       "appDevserverUrl": "https://localhost:50071",
-      "apiDevserverUrl": "https://localhost:7259"
+      "apiDevserverUrl": "https://localhost:7259",
+      "appName": "gifteee",
+      "resourceGroup": "Gifteee"
     }
   }
 }
