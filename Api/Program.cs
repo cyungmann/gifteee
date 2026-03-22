@@ -17,7 +17,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDbContextFactory<WeatherContext>(opts =>
-    opts.UseNpgsql(builder.Configuration.GetConnectionString("WeatherConnection"), x => x.EnableRetryOnFailure()));
+    opts.UseNpgsql(builder.Configuration.GetConnectionString("POSTGRESQLCONNSTR_gifteee"), x => x.EnableRetryOnFailure()));
 builder.Services.AddTransient<DbInitializer>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
