@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Text;
 using Gifteee;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +54,8 @@ app.MapGet("/api/weatherforecast", async ([FromServices] IDbContextFactory<Weath
 
 app.MapFallbackToFile("/index.html");
 
+LogDebugInfo(app.Logger);
+
 await using (var scope = app.Services.CreateAsyncScope())
 {
     var services = scope.ServiceProvider;
@@ -68,3 +72,25 @@ await using (var scope = app.Services.CreateAsyncScope())
 }
 
 app.Run();
+
+void LogDebugInfo(ILogger logger)
+{
+    var envVars = Environment.GetEnvironmentVariables();
+    Console.WriteLine("Environment variables:");
+    var envVarsList = new List<string>();
+    foreach (DictionaryEntry entry in envVars)
+    {
+        Console.WriteLine($"  {entry.Key}={entry.Value}");
+        envVarsList.Add($"{entry.Key}={entry.Value}");
+    }
+    logger.LogInformation("Environment variables: {EnvironmentVariables}", string.Join(", ", envVarsList));
+
+    Console.WriteLine("Configuration:");
+    var configList = new List<string>();
+    foreach (var (key, value) in app.Configuration.AsEnumerable())
+    {
+        Console.WriteLine($"  {key}={value}");
+        configList.Add($"{key}={value}");
+    }
+    logger.LogInformation("Configuration: {Configuration}", string.Join(", ", configList));
+}
