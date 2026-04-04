@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+      target: dev
+    volumes:
+      - .:/workspace:cached
+    command: sleep infinity
+    depends_on:
+      - postgres
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Host=postgres;Port=5432;Database=gifteee;Username=gifteee;Password=gifteee
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: gifteee
+      POSTGRES_USER: gifteee
+      POSTGRES_PASSWORD: gifteee
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "2345:5432"
+
+volumes:
+  postgres-data:

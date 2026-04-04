@@ -41,3 +41,22 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Api.dll"]
+
+# Dev container stage
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS dev
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:/root/.dotnet/tools:$PATH"
+RUN apt-get update \
+    && apt-get --assume-yes --no-install-recommends install curl \
+    && curl -fsSL https://deb.nodesource.com/setup_25.x | bash - \
+    && apt-get --assume-yes --no-install-recommends install \
+        nodejs \
+    && rm -rf /var/lib/apt/lists/* \
+    && npm install -g corepack \
+    && corepack enable pnpm \
+    && dotnet tool install --global dotnet-ef
+
+WORKDIR /workspace
+
+CMD ["sleep", "infinity"]
