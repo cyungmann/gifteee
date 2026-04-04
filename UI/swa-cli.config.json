@@ -8,7 +8,7 @@
       "run": "pnpm start",
       "appDevserverUrl": "https://localhost:50071",
       "apiDevserverUrl": "https://localhost:7259",
-      "appName": "gifteee",
+      "appName": "gifteee-ui",
       "resourceGroup": "Gifteee"
     }
   }
