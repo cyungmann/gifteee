@@ -43,10 +43,8 @@ COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Api.dll"]
 
 # Dev container stage
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS dev
+FROM mcr.microsoft.com/devcontainers/dotnet:10.0 AS dev
 
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:/root/.dotnet/tools:$PATH"
 RUN apt-get update \
     && apt-get --assume-yes --no-install-recommends install curl \
     && curl -fsSL https://deb.nodesource.com/setup_25.x | bash - \
@@ -55,7 +53,16 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && npm install -g corepack \
     && corepack enable pnpm \
-    && dotnet tool install --global dotnet-ef
+    && dotnet tool install --global dotnet-ef \
+    && echo 'export HISTSIZE=10000' >> /home/vscode/.bashrc \
+    && echo 'export HISTFILESIZE=20000' >> /home/vscode/.bashrc \
+    && echo 'shopt -s histappend' >> /home/vscode/.bashrc \
+    && echo 'PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"' >> /home/vscode/.bashrc \
+    && mkdir /home/vscode/commandhistory \
+    && mkdir -p /home/vscode/.nuget/packages \
+    && mkdir -p /home/vscode/.local/share/NuGet/http-cache \
+    && mkdir -p /home/vscode/.pnpm \
+    && chown -R vscode:vscode /home/vscode/
 
 WORKDIR /workspace
 

@@ -1,10 +1,13 @@
 {
   "name": "aspnet-angular-fullstack",
-  "dockerComposeFile": "../docker-compose.yml",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "../docker-compose.dev.yml"
+  ],
   "service": "app",
   "workspaceFolder": "/workspace",
 
-  "forwardPorts": [8080, 8081],
+  "forwardPorts": [8080, 8081, 8888],
 
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
@@ -27,7 +30,8 @@
         "ms-dotnettools.csdevkit",
         "ms-vscode.powershell",
         "angular.ng-template",
-        "johnpapa.angular2"
+        "johnpapa.angular2",
+        "ms-azuretools.vscode-docker"
       ]
     }
   }

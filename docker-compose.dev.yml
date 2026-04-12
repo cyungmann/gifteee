@@ -1,0 +1,40 @@
+services:
+  app:
+    build:
+      target: dev
+    volumes:
+      - .:/workspace:cached
+      - bash-history:/home/vscode/commandhistory
+      - nuget-packages:/home/vscode/.nuget/packages
+      - nuget-http-cache:/home/vscode/.local/share/NuGet/http-cache-wrapper
+      - pnpm-store:/home/vscode/.pnpm
+    command: sleep infinity
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Host=postgres;Port=5432;Database=appdb;Username=app;Password=app
+      - HISTFILE=/home/vscode/commandhistory/.bash_history
+      - NUGET_PACKAGES=/home/vscode/.nuget/packages
+      - NUGET_HTTP_CACHE_PATH=/home/vscode/.local/share/NuGet/http-cache-wrapper/http-cache
+      - PNPM_HOME=/home/vscode/.pnpm
+    depends_on:
+      - postgres
+  
+  pgadmin:
+    image: dpage/pgadmin4:8.4
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gifteee.app
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8888:80"
+    depends_on:
+      - postgres
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  pgadmin-data:
+  bash-history:
+  nuget-packages:
+  nuget-http-cache:
+  pnpm-store:
